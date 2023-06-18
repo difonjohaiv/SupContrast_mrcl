@@ -1,6 +1,8 @@
 tmp*.py
 .idea/
 
+H:\CODE\SupContrast_mrcl\datasets\cifar-10-python.tar.gz
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

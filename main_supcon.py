@@ -253,9 +253,10 @@ def train(train_loader, model, criterion, optimizer, epoch, opt):
 
 
 def main():
+    # initial arguments and dataset path
     opt = parse_option()
 
-    # build data loader
+    # build data loader 加载数据集
     train_loader = set_loader(opt)
 
     # build model and criterion
