@@ -47,15 +47,15 @@ class SupConLoss(nn.Module):
         elif labels is None and mask is None:
             mask = torch.eye(batch_size, dtype=torch.float32).to(device)
         elif labels is not None:
-            labels = labels.contiguous().view(-1, 1)
+            labels = labels.contiguous().view(-1, 1)  # contiguous()为了保证内存的连续性，view（-1，1）第一个dim自动推断，第二个dim为1
             if labels.shape[0] != batch_size:
                 raise ValueError('Num of labels does not match num of features')
-            mask = torch.eq(labels, labels.T).float().to(device)
+            mask = torch.eq(labels, labels.T).float().to(device)  # eq()函数的作用是判读对比双方是否equal，相等就是1，不相等就是0
         else:
             mask = mask.float().to(device)
 
-        contrast_count = features.shape[1]
-        contrast_feature = torch.cat(torch.unbind(features, dim=1), dim=0)
+        contrast_count = features.shape[1]  # 获取对比视图的数量
+        contrast_feature = torch.cat(torch.unbind(features, dim=1), dim=0)  # 把2个视图的向量特征拼接在一起
         if self.contrast_mode == 'one':
             anchor_feature = features[:, 0]
             anchor_count = 1
@@ -65,7 +65,7 @@ class SupConLoss(nn.Module):
         else:
             raise ValueError('Unknown mode: {}'.format(self.contrast_mode))
 
-        # compute logits
+        # compute logits。计算相似度使用inner product
         anchor_dot_contrast = torch.div(
             torch.matmul(anchor_feature, contrast_feature.T),
             self.temperature)
