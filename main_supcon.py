@@ -217,8 +217,8 @@ def train(train_loader, model, criterion, optimizer, epoch, opt):
 
         # compute loss
         features = model(images)
-        f1, f2 = torch.split(features, [bsz, bsz], dim=0)
-        features = torch.cat([f1.unsqueeze(1), f2.unsqueeze(1)], dim=1)
+        f1, f2 = torch.split(features, [bsz, bsz], dim=0)  # 划分视图
+        features = torch.cat([f1.unsqueeze(1), f2.unsqueeze(1)], dim=1)  # 先加维度，再拼接。16 * 2 * 128
         if opt.method == 'SupCon':
             loss = criterion(features, labels)
         elif opt.method == 'SimCLR':
